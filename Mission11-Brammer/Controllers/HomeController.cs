@@ -16,7 +16,7 @@ namespace Mission11_Brammer.Controllers
 
         public IActionResult Index(int pageNum)
         {
-            int pageSize = 5;
+            int pageSize = 10;
 
             var blah = new BooksListViewModel
             {
