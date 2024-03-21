@@ -20,6 +20,8 @@ namespace Mission11_Brammer.Infrastructure
         [HtmlAttributeNotBound]
         public ViewContext? ViewContext { get; set; }
         public string? PageAction { get; set; }
+        [HtmlAttributeName(DictionaryAttributePrefix ="page-url-")]
+        public Dictionary<string, object> PageUrlValues { get; set; } = new Dictionary<string, object>();
         public PaginationInfo? PageModel { get; set; }
 
         public bool PageClassesEnabled { get; set; } = false;
@@ -38,7 +40,9 @@ namespace Mission11_Brammer.Infrastructure
                 for (int i = 1; i <= PageModel.TotalNumPages; i++)
                 {
                     TagBuilder tag = new TagBuilder("a");
-                    tag.Attributes["href"] = urlHelper.Action(PageAction, new {pageNum = i}); 
+                    PageUrlValues["pageNum"] = i;
+
+                    tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues); 
 
                     if (PageClassesEnabled)
                     {
