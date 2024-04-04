@@ -14,13 +14,14 @@ namespace Mission11_Brammer.Controllers
             _repo = temp;
         }
 
-        public IActionResult Index(int pageNum)
+        public IActionResult Index(int pageNum, string? bookCategory)
         {
             int pageSize = 10;
 
             var blah = new BooksListViewModel
             {
                 Books = _repo.Books
+                    .Where(x => x.Category == bookCategory || bookCategory == null)
                     .OrderBy(x => x.Title)
                     .Skip((pageNum - 1) * pageSize)
                     .Take(pageSize),
@@ -29,9 +30,11 @@ namespace Mission11_Brammer.Controllers
                 {
                     CurrentPage = pageNum,
                     ItemsPerPage = pageSize,
-                    TotalItems = _repo.Books.Count()
+                    TotalItems = bookCategory == null ? _repo.Books.Count() : _repo.Books.Where(x => x.Category == bookCategory).Count()
 
-                }
+                }, 
+
+                CurrentBookCategory = bookCategory 
             };
 
             return View(blah);
